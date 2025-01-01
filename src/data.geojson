@@ -1,0 +1,17 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [14.451504480493412, 50.079420697915396]
+            },
+            "properties": {
+                "title": "Ginkgo Tree",
+                "description": "A beautiful Ginkgo tree in Prague."
+            }
+        }
+    ]
+}
+  
