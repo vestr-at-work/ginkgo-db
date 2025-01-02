@@ -1,5 +1,4 @@
 h1 {
-    margin-top: 2em;
     font-size: xx-large;
 }
 
@@ -12,6 +11,7 @@ body {
     #659287 
     */
     width: 50%;
+    margin-top: 2em;
     margin-left: 25%;
     background: #FFE6A9;
 
@@ -46,16 +46,114 @@ body {
 .dialog-content {
     background-color: #FAFAFA;
     margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    width: 80%; /* Could be more or less, depending on screen size */
+    padding: 1.5em;
+    width: 60%; /* Could be more or less, depending on screen size */
     border-radius: 1em;
 }
 
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-container label {
+    margin-bottom: 0.3em;
+    font-weight: bold;
+}
+
+.form-container h3 {
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    color: #DEAA79; 
+}
+
 .form-container input {
-    width: 100%;
+    /* width: 100%; */
     padding: 0.5em;
     margin-bottom: 1em;
     border-radius: 0.5em;
     border: none;
-    font-size: small;
+    font-size: medium;
+}
+
+.add-button {
+    appearance: none;
+    background-color: #659287;
+    border: 1px solid rgba(27, 31, 35, .15);
+    border-radius: 0.5em;
+    box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    /* font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"; */
+    font-size: large;
+    font-weight: 600;
+    padding: 0.4em 1em;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.add-button:focus:not(:focus-visible):not(.focus-visible) {
+    box-shadow: none;
+    outline: none;
+}
+
+.add-button:hover {
+    background-color: #7aa399;
+}
+
+.add-button:focus {
+    box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+    outline: none;
+}
+
+.add-button:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+}
+
+.add-button:active {
+    background-color: #659287;
+    box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+}
+
+.center {
+    margin: 0px auto;
+}
+
+.form-container .add-button {
+    margin-top: 0.3em
+}
+
+.leaflet-popup-content .add-button {
+    margin-bottom: 0.2em;
+    font-size: medium;
+    padding: 0.3em 0.7em;
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 768px) {
+    body {
+        margin-top: 0.5em;
+        width: 90%;
+        margin-left: 5%;
+    }
+
+    #map { 
+        margin-bottom: 10em;
+    } 
+
+    .dialog-content {
+        width: 80%; 
+    }
 }

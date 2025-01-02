@@ -16,8 +16,8 @@ window.onclick = function(event) {
 } 
 
 function onMapClick(e) {
-    let popupContent = `<h3>Do you want to add new Ginkgo?<h3>
-                        <input type="button" id="addNewButton" onclick="addNewGinkgo(${e.latlng.lat}, ${e.latlng.lng})" value="Yes"/>`;
+    let popupContent = `<h3>Do you want to add new Ginkgo?</h3>
+                        <input type="button" class="add-button center" role="button" onclick="addNewGinkgo(${e.latlng.lat}, ${e.latlng.lng})" value="Yes"/>`;
     popup
         .setLatLng(e.latlng)
         .setContent(popupContent)
