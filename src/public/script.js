@@ -1,11 +1,14 @@
-var popup = L.popup();
+let popup = L.popup();
 let geoJsonData = {};
-var map = L.map('map').setView([50.079420697915396, 14.451504480493412], 13);
-var dialog = document.getElementById("addGinkgoDialog");
+let map = L.map('map').setView([50.079420697915396, 14.451504480493412], 13);
+let dialog = document.getElementById("addGinkgoDialog");
+let inputLat = document.getElementById("inputLat");
+let inputLng = document.getElementById("inputLng");
 
 function addNewGinkgo(lat, lng) {
     dialog.style.display = "block";
-
+    inputLat.value = lat.toString();
+    inputLng.value = lng.toString();
     console.log("add new ginkgo" + lat.toString() + lng.toString());
 }
 

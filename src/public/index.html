@@ -43,18 +43,21 @@
     <!-- Input form for Adding new Ginkgos -->
     <div id="addGinkgoDialog">
         <div class="dialog-content">
-            <form class="form-container">
-                <h3>Adding New Ginkgo Tree</h3>
-                <label for="lad">Laditude</label>
-                <input type="number" step="any" name="lad" required>
+            <form class="form-container" action="/request-new" method="POST">
+                <h3>Request a New Ginkgo Tree</h3>
+                <label for="lat">Latitude</label>
+                <input type="number" step="any" id="inputLat" name="lat" required>
 
                 <label for="lng">Longitude</label>
-                <input type="number" step="any" name="lng" required>
+                <input type="number" step="any" id="inputLng" name="lng" required>
+
+                <label for="nick">Your Nickname</label>
+                <input type="text" placeholder="TurboGinkger123" name="nick">
                 
                 <label for="comment">Comment</label>
-                <input type="text" name="comment" required>
+                <input type="text" placeholder="Provide more information..." name="comment">
 
-                <button type="submit" class="add-button center">Add</button>
+                <button type="submit" class="add-button center">Request</button>
             </form>
         </div>
     </div>
