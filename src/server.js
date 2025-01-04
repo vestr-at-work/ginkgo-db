@@ -15,6 +15,7 @@ const ADDRESS = '10.128.5.151';
 const fs = new LightningFS('fs');
 const pfs = fs.promises;
 const dir = '/repo';
+const DATA_DIR = `${dir}/src/data`;
 
 await pfs.mkdir(dir);
 
@@ -31,9 +32,47 @@ await git.clone({
 await pfs.readdir(dir);
 
 app.use(express.urlencoded({ extended: true }));
-
 // Serve static files (e.g., index.html)
 app.use(express.static('public'));
+app.use(express.json());
+
+let treeGeoData = await collectGeoData();
+
+async function collectGeoData() {
+    try {
+        const files = await pfs.readdir(DATA_DIR);
+        const features = [];
+
+        for (const file of files) {
+            const filePath = path.join(DATA_DIR, file);
+            try {
+                const fileContent = await pfs.readFile(filePath, 'utf8');
+                const geoJson = JSON.parse(fileContent);
+
+                // Check if the file contains a valid GeoJSON Point feature
+                if (
+                    geoJson.type === 'Feature' &&
+                    geoJson.geometry?.type === 'Point' &&
+                    Array.isArray(geoJson.geometry.coordinates)
+                ) {
+                    features.push(geoJson);
+                }
+            } catch (err) {
+                console.error(`Error reading or parsing file ${file}:`, err);
+            }
+        }
+        
+        const featureCollection = {
+            type: 'FeatureCollection',
+            features,
+        };
+
+        return featureCollection;
+
+    } catch (err) {
+        console.error('Error retrieving data:', err);
+    }
+}
 
 // Handle POST request to /request-new
 app.post('/request-new', asyncHandler(async (req, res) => {
@@ -69,7 +108,7 @@ app.post('/request-new', asyncHandler(async (req, res) => {
 
     const timestamp = Date.now();
     const fileName = `${timestamp}.json`;
-    const filePath = path.join(`src/data/`, fileName);
+    const filePath = path.join(`src/requested-data/`, fileName);
 
     // Save the GeoJSON feature to the file in repo
     await pfs.writeFile(`${dir}/${filePath}`, JSON.stringify(geoJsonFeature, null, 2));
@@ -102,6 +141,10 @@ app.post('/request-new', asyncHandler(async (req, res) => {
     // Redirect to the main site after success
     res.redirect('/');
 }));
+
+app.get('/data', (req, res) => {
+    res.json(treeGeoData);
+});
 
 app.listen(PORT, ADDRESS, () => {
     console.log(`Server running at http://${ADDRESS}:${PORT}/`);

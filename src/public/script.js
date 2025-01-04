@@ -50,8 +50,9 @@ function onMapClick(e) {
 function addDataToMap(data, map) {
     L.geoJSON(data, {
         onEachFeature: (feature, layer) => {
-            let popupContent = `<h3>${feature.properties.title}</h3>
-                                <p>${feature.properties.description}</p>`;
+            let popupContent = `<h3>Ginkgo tree</h3>
+                                <p>Found by ${feature.properties.nickname}</p> 
+                                <p>${feature.properties.comment}</p>`;
             if (feature.properties.image) {
                 popupContent += `<img src="${feature.properties.image}" alt="${feature.properties.title}" style="width:100px;">`;
             }
@@ -66,7 +67,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // Fetch GeoJSON data from the file
-fetch('data.geojson')
+fetch('/data')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
