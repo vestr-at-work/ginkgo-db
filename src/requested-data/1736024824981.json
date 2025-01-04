@@ -1,0 +1,14 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.463886590636415,
+      50.0797303040112
+    ]
+  },
+  "properties": {
+    "nickname": "GraveDigger",
+    "comment": "This is kinda fake news"
+  }
+}
