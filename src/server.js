@@ -8,43 +8,39 @@ import path from 'path';
 import asyncHandler from 'express-async-handler';
 
 const app = express();
-const PORT = 3000;
-// const ADDRESS = '192.168.0.105';
-const ADDRESS = '10.128.5.151';
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static('public'));
 
 const fs = new LightningFS('fs');
 const pfs = fs.promises;
-const dir = '/repo';
-const DATA_DIR = `${dir}/src/data`;
+const REPO_ROOT = '/repo';
+const DATA_DIR = 'src/data/';
+const REQUEST_DATA_DIR = 'src/data-requested/';
 
-await pfs.mkdir(dir);
-
+// Clone repository to fake file system for saving new trees to
+await pfs.mkdir(REPO_ROOT);
 await git.clone({
     fs,
     http,
-    dir,
-    url: 'https://github.com/vestr-at-work/ginkgo-db.git',
+    dir: REPO_ROOT,
+    url: process.env.REPOSITORY_LINK,
     ref: 'main',
     singleBranch: true,
     depth: 1,
 });
 
-await pfs.readdir(dir);
-
-app.use(express.urlencoded({ extended: true }));
-// Serve static files (e.g., index.html)
-app.use(express.static('public'));
-app.use(express.json());
-
 let treeGeoData = await collectGeoData();
 
+// Collect the data from individual files and have them in memory
 async function collectGeoData() {
     try {
-        const files = await pfs.readdir(DATA_DIR);
+        const dataDirPath = `${REPO_ROOT}/${DATA_DIR}`;
+        const files = await pfs.readdir(dataDirPath);
         const features = [];
 
         for (const file of files) {
-            const filePath = path.join(DATA_DIR, file);
+            const filePath = path.join(dataDirPath, file);
             try {
                 const fileContent = await pfs.readFile(filePath, 'utf8');
                 const geoJson = JSON.parse(fileContent);
@@ -75,7 +71,7 @@ async function collectGeoData() {
 }
 
 // Handle POST request to /request-new
-app.post('/request-new', asyncHandler(async (req, res) => {
+app.post('/api/request-new', asyncHandler(async (req, res) => {
     // Extract and sanitize data
     const lat = parseFloat(req.body.lat);
     const lng = parseFloat(req.body.lng);
@@ -104,19 +100,19 @@ app.post('/request-new', asyncHandler(async (req, res) => {
         },
     };
 
-    console.log('New GeoJSON Point Feature:', JSON.stringify(geoJsonFeature, null, 2));
+    // console.log('New GeoJSON Point Feature:', JSON.stringify(geoJsonFeature, null, 2));
 
     const timestamp = Date.now();
     const fileName = `${timestamp}.json`;
-    const filePath = path.join(`src/requested-data/`, fileName);
+    const filePath = path.join(REQUEST_DATA_DIR, fileName);
 
     // Save the GeoJSON feature to the file in repo
-    await pfs.writeFile(`${dir}/${filePath}`, JSON.stringify(geoJsonFeature, null, 2));
+    await pfs.writeFile(path.join(REPO_ROOT, filePath), JSON.stringify(geoJsonFeature, null, 2));
     // Add and commit the change
-    await git.add({fs, dir, filepath: filePath});
+    await git.add({fs, dir: REPO_ROOT, filepath: filePath});
     await git.commit({
         fs,
-        dir,
+        dir: REPO_ROOT,
         message: `Add new Ginko with stamp ${timestamp}`,
         author: {
           name: 'ginkgo-adder',
@@ -127,7 +123,7 @@ app.post('/request-new', asyncHandler(async (req, res) => {
     let pushResult = await git.push({
         fs,
         http,
-        dir,
+        dir: REPO_ROOT,
         remote: 'origin',
         ref: 'main',
         onAuth: () => ({
@@ -136,16 +132,17 @@ app.post('/request-new', asyncHandler(async (req, res) => {
         }),
     });
 
-    console.log(pushResult);
-
+    // console.log(pushResult);
+    
     // Redirect to the main site after success
     res.redirect('/');
 }));
 
-app.get('/data', (req, res) => {
+// Handle GET request to /api/data
+app.get('/api/data', (req, res) => {
     res.json(treeGeoData);
 });
 
-app.listen(PORT, ADDRESS, () => {
-    console.log(`Server running at http://${ADDRESS}:${PORT}/`);
+app.listen(process.env.PORT, process.env.ADDRESS, () => {
+    console.log(`Server running at http://${process.env.ADDRESS}:${process.env.PORT}/`);
 });

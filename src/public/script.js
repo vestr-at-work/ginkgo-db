@@ -9,7 +9,6 @@ function addNewGinkgo(lat, lng) {
     dialog.style.display = "block";
     inputLat.value = lat.toString();
     inputLng.value = lng.toString();
-    console.log("add new ginkgo" + lat.toString() + lng.toString());
 }
 
 window.onclick = function(event) {
@@ -25,26 +24,6 @@ function onMapClick(e) {
         .setLatLng(e.latlng)
         .setContent(popupContent)
         .openOn(map);
-
-    // const newFeature = {
-    //     "type": "Feature",
-    //     "geometry": {
-    //         "type": "Point",
-    //         "coordinates": [e.latlng.lng, e.latlng.lat]
-    //     },
-    //     "properties": {
-    //         "title": "New Tree",
-    //         "description": "A newly added tree."
-    //     }
-    // };
-
-    // // Add the new feature to the GeoJSON data
-    // geoJsonData.features.push(newFeature);
-
-    // console.log(geoJsonData);
-    // // this is ugly CHANGE it to be more efficient!!!
-    // addDataToMap(geoJsonData, map);
-    
 }
 
 function addDataToMap(data, map) {
@@ -67,7 +46,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 // Fetch GeoJSON data from the file
-fetch('/data')
+fetch('/api/data')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
