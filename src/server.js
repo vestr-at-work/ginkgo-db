@@ -1,23 +1,38 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const fs = require('fs');
-const path = require('path');
+import 'fake-indexeddb/auto';
+import LightningFS from '@isomorphic-git/lightning-fs';
+import * as git from 'isomorphic-git';
+import * as http from 'isomorphic-git/http/node/index.js';
 
+import express from 'express';
+import path from 'path';
+
+const app = express();
 const PORT = 3000;
 const ADDRESS = '192.168.0.105';
 
-// Middleware to parse URL-encoded form data
-app.use(bodyParser.urlencoded({ extended: true }));
+const fs = new LightningFS('fs');
+const pfs = fs.promises;
+const dir = '/repo';
+
+await pfs.mkdir(dir);
+
+await git.clone({
+    fs,
+    http,
+    dir,
+    url: 'https://github.com/vestr-at-work/ginkgo-db.git',
+    ref: 'main',
+    singleBranch: true,
+    depth: 1,
+});
+
+let out = await pfs.readdir(dir);
+console.log(out);
+
+app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (e.g., index.html)
 app.use(express.static('public'));
-
-// Ensure the 'data' directory exists
-const dataDir = path.join(__dirname, 'data');
-if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir);
-}
 
 // Handle POST request to /request-new
 app.post('/request-new', (req, res) => {
@@ -49,7 +64,7 @@ app.post('/request-new', (req, res) => {
 
     const timestamp = Date.now();
     const fileName = `${timestamp}.json`;
-    const filePath = path.join(dataDir, fileName);
+    const filePath = path.join(dir, fileName);
 
     // Save the GeoJSON feature to the file
     fs.writeFile(filePath, JSON.stringify(geoJsonFeature, null, 2), (err) => {
@@ -59,6 +74,7 @@ app.post('/request-new', (req, res) => {
         }
 
         console.log(`GeoJSON data saved to ${filePath}`);
+
         // Redirect to the main site after success
         res.redirect('/');
     });
