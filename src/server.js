@@ -5,10 +5,12 @@ import * as http from 'isomorphic-git/http/node/index.js';
 
 import express from 'express';
 import path from 'path';
+import asyncHandler from 'express-async-handler';
 
 const app = express();
 const PORT = 3000;
-const ADDRESS = '192.168.0.105';
+// const ADDRESS = '192.168.0.105';
+const ADDRESS = '10.128.5.151';
 
 const fs = new LightningFS('fs');
 const pfs = fs.promises;
@@ -26,8 +28,7 @@ await git.clone({
     depth: 1,
 });
 
-let out = await pfs.readdir(dir);
-console.log(out);
+await pfs.readdir(dir);
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 // Handle POST request to /request-new
-app.post('/request-new', (req, res) => {
+app.post('/request-new', asyncHandler(async (req, res) => {
     // Extract and sanitize data
     const lat = parseFloat(req.body.lat);
     const lng = parseFloat(req.body.lng);
@@ -64,21 +65,39 @@ app.post('/request-new', (req, res) => {
 
     const timestamp = Date.now();
     const fileName = `${timestamp}.json`;
-    const filePath = path.join(dir, fileName);
+    const filePath = path.join(`src/data/`, fileName);
 
-    // Save the GeoJSON feature to the file
-    fs.writeFile(filePath, JSON.stringify(geoJsonFeature, null, 2), (err) => {
-        if (err) {
-            console.error('Error saving file:', err);
-            return res.status(500).send('Error saving data');
+    // Save the GeoJSON feature to the file in repo
+    await pfs.writeFile(`${dir}/${filePath}`, JSON.stringify(geoJsonFeature, null, 2));
+    // Add and commit the change
+    await git.add({fs, dir, filepath: filePath});
+    await git.commit({
+        fs,
+        dir,
+        message: `Add new Ginko with stamp ${timestamp}`,
+        author: {
+          name: 'ginkgo-adder',
+          email: 'ginkgo-adder@example.org'
         }
-
-        console.log(`GeoJSON data saved to ${filePath}`);
-
-        // Redirect to the main site after success
-        res.redirect('/');
     });
-});
+
+    let pushResult = await git.push({
+        fs,
+        http,
+        dir,
+        remote: 'origin',
+        ref: 'main',
+        onAuth: () => ({
+            username: process.env.AUTH_ID,
+            password: process.env.AUTH_TOKEN, 
+        }),
+    });
+
+    console.log(pushResult);
+
+    // Redirect to the main site after success
+    res.redirect('/');
+}));
 
 app.listen(PORT, ADDRESS, () => {
     console.log(`Server running at http://${ADDRESS}:${PORT}/`);
