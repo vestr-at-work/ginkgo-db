@@ -43,6 +43,10 @@ app.post('/request-new', asyncHandler(async (req, res) => {
     const nick = req.body.nick ? req.body.nick.trim() : 'Anonymous';
     const comment = req.body.comment ? req.body.comment.trim() : 'No comment provided';
 
+    if (nick.length > 30 && comment.length > 161) {
+        return res.status(400).send('Nick or Comment too long');
+    }
+
     // Basic validation
     if (isNaN(lat) || isNaN(lng)) {
         return res.status(400).send('Invalid latitude or longitude');
