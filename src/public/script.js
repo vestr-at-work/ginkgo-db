@@ -5,6 +5,17 @@ let dialog = document.getElementById("addGinkgoDialog");
 let inputLat = document.getElementById("inputLat");
 let inputLng = document.getElementById("inputLng");
 
+let leafIcon = L.icon({
+    iconUrl: 'ginkgo.png',
+    shadowUrl: 'ginkgo-shadow.png',
+
+    iconSize:     [30, 30], // size of the icon
+    shadowSize:   [30, 30], // size of the shadow
+    iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 30],  // the same for the shadow
+    popupAnchor:  [0, -20] // point from which the popup should open relative to the iconAnchor
+});
+
 function addNewGinkgo(lat, lng) {
     dialog.style.display = "block";
     inputLat.value = lat.toString();
@@ -28,6 +39,10 @@ function onMapClick(e) {
 
 function addDataToMap(data, map) {
     L.geoJSON(data, {
+        pointToLayer: (feature, latlng) => {
+            // Use custom icon for each point
+            return L.marker(latlng, { icon: leafIcon });
+        },
         onEachFeature: (feature, layer) => {
             let popupContent = `<h3>Ginkgo tree</h3>
                                 <p>Found by ${feature.properties.nickname}</p> 
