@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 h1 {
     font-size: xx-large;
 }
@@ -15,6 +19,7 @@ body {
     margin-left: 20%;
     background: #FFE6A9;
 
+    font-family: "Inter", serif;
     font-size: large;
 
     color: #659287;
@@ -23,12 +28,63 @@ body {
     margin-bottom: 4em;
 }
 
+bold {
+    font-weight: bolder;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul li {
+    margin: 0.5em 0em;
+}
+
+#socials {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 3em;
+}
+
+#socials a {
+    margin: 1em;
+}
+
+#socials a img {
+    width: 2em;
+    height: 2em;
+}
+
+#leafContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15vh;
+}
+
+#leaf {
+    width: 2em;
+    height: 2em;
+    transition: transform .7s ease-in-out;
+}
+
+#leaf:hover {
+    transform: rotate(360deg);
+}
+
+#textStart {
+    padding-top: 5vh;
+}
+
 #map { 
     width: 100%; 
-    height: 40em;
+    height: 65vh;
     border-radius: 1em;
-    margin-bottom: 15em;
-} 
+    margin-bottom: 10vh;
+}
 
 #addGinkgoDialog {
     display: none; /* Hidden by default */
@@ -150,9 +206,9 @@ body {
         margin-left: 5%;
     }
 
-    #map { 
-        margin-bottom: 10em;
-    } 
+    /* #map { 
+        margin-bottom: 15vh;
+    }  */
 
     .dialog-content {
         width: 80%; 
