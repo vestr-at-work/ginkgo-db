@@ -6,8 +6,8 @@ let inputLat = document.getElementById("inputLat");
 let inputLng = document.getElementById("inputLng");
 
 let leafIcon = L.icon({
-    iconUrl: 'ginkgo.png',
-    shadowUrl: 'ginkgo-shadow.png',
+    iconUrl: 'icons/ginkgo-orange.svg',
+    shadowUrl: 'icons/ginkgo-shadow.png',
 
     iconSize:     [30, 30], // size of the icon
     shadowSize:   [30, 30], // size of the shadow
