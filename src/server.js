@@ -6,7 +6,6 @@ import * as http from 'isomorphic-git/http/node/index.js';
 import express from 'express';
 import path from 'path';
 import asyncHandler from 'express-async-handler';
-import { time } from 'console';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));

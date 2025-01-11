@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Ginkgo Biloba Database</title>
+    <link rel="icon" xmlns="http://www.w3.org/2000/svg" href="icons/ginkgo.svg">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -24,7 +25,10 @@
 
     <div id="leafContainer"><a href="#moreInfo"><img id="leaf" src="icons/ginkgo-green.svg" xmlns="http://www.w3.org/2000/svg"></img></a></div>
 
-    <h3 id="moreInfo">How does this work?</h3>
+    <div id="moreInfo">
+        <h3>How does this work?</h3>
+    </div>
+
     <p>
         Find <a href="https://en.wikipedia.org/wiki/Ginkgo_biloba" target="_blank">Ginkgo Biloba</a> trees in your area and share new tree locations with others!
         Go for a nice walk under Ginkgo trees or save the data and make something new with them.<br/>
@@ -64,9 +68,9 @@
                 <input type="number" step="any" id="inputLng" name="lng" required>
 
                 <label for="size">Size</label>
-                <select name="size" id="size" multiple>
+                <select name="size" id="size">
                     <option value="small">Small</option>
-                    <option value="medium">Medium</option>
+                    <option selected value="medium">Medium</option>
                     <option value="large">Large</option>
                 </select>
 

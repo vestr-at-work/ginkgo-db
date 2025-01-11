@@ -58,6 +58,10 @@ ul li {
     height: 2em;
 }
 
+#socials a img:hover {
+    opacity: 0.7;
+}
+
 #leafContainer {
     width: 100%;
     display: flex;
@@ -73,6 +77,7 @@ ul li {
 
 #leaf:hover {
     transform: rotate(360deg);
+    opacity: 0.7;
 }
 
 #textStart {
@@ -97,6 +102,33 @@ ul li {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+#buttonAddTree {
+    margin-top: 0.4em;
+    margin-bottom: 0.3em;
+    padding: 0.2em 0.7em;
+}
+
+#tree-pupup-content-container div {
+    font-size: small;
+    margin-bottom: 0.3em;
+}
+
+#moreInfo {
+    padding-top: 0.5em;
+}
+
+.leaflet-popup-content {
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.leaflet-popup-content h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .dialog-content {
@@ -126,7 +158,12 @@ ul li {
     color: #DEAA79; 
 }
 
-.form-container input {
+.form-container select {
+    display: flex;
+    flex-direction: row;
+}
+
+.form-container input, .form-container select {
     /* width: 100%; */
     padding: 0.5em;
     margin-bottom: 1em;

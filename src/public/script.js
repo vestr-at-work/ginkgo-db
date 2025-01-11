@@ -34,17 +34,18 @@ function capitalizeFirstLetter(val) {
 
 function getTreePopupAdd(lat, lng) {
     return `<h3>Want to add new Ginkgo?</h3>
-            <input type="button" class="add-button center" role="button" onclick="addNewGinkgo(${lat}, ${lng})" value="Yes"/>`
+            <input type="button" id="buttonAddTree" class="add-button center" role="button" onclick="addNewGinkgo(${lat}, ${lng})" value="Yes"/>`
 }
 
 function getTreePopup(properties) {
     let result = `<h3>${capitalizeFirstLetter(properties.size)} Ginkgo Tree</h3>
-                <div id="treePopup">
-                <p>Found by <bold>${properties.nickname}</bold> on ${properties.timestamp}</p>`;
+                <div id="tree-pupup-content-container">`;
 
     if (properties.comment !== "") {
-       result += `<p>${properties.comment}</p>`;
+       result += `<div>${properties.comment}</div>`;
     }
+
+    result += `<div>Found by <bold>${properties.nickname}</bold> on ${properties.timestamp}</div>`;
 
     result += "</div>";
     return result;
