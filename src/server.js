@@ -19,18 +19,29 @@ const DATA_DIR = 'src/data/';
 const REQUEST_DATA_DIR = 'src/data-requested/';
 
 // Clone repository to fake file system for saving new trees to
-await pfs.mkdir(REPO_ROOT);
-await git.clone({
-    fs,
-    http,
-    dir: REPO_ROOT,
-    url: process.env.REPOSITORY_LINK,
-    ref: 'main',
-    singleBranch: true,
-    depth: 1,
-});
+let initialized = false;
+let treeGeoData;
 
-let treeGeoData = await collectGeoData();
+async function init() {
+    if (initialized) return;
+    initialized = true;
+    
+    await pfs.mkdir(REPO_ROOT).catch(() => {}); // Ignore if already exists
+    await git.clone({
+        fs,
+        http,
+        dir: REPO_ROOT,
+        url: process.env.REPOSITORY_LINK,
+        ref: 'main',
+        singleBranch: true,
+        depth: 1,
+    });
+
+    treeGeoData = await collectGeoData();
+}
+
+// Then in your route handlers or before starting the server:
+await init();
 
 // Collect the data from individual files and have them in memory
 async function collectGeoData() {
@@ -154,6 +165,17 @@ app.get('/api/data', (req, res) => {
     res.json(treeGeoData);
 });
 
-app.listen(process.env.PORT, process.env.ADDRESS, () => {
-    console.log(`Server running at http://${process.env.ADDRESS}:${process.env.PORT}/`);
-});
+if (process.env.VERCEL === 1) {
+    app.listen(process.env.PORT, () => {
+        console.log(`Server running.`);
+    });
+}
+else {
+    app.listen(process.env.PORT, process.env.ADDRESS, () => {
+        console.log(`Server running at http://${process.env.ADDRESS}:${process.env.PORT}/`);
+    });
+}
+
+// export the app for vercel serverless functions
+export default app;
+
