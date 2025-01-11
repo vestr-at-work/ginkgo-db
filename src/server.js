@@ -154,6 +154,14 @@ app.get('/api/data', (req, res) => {
     res.json(treeGeoData);
 });
 
-app.listen(process.env.PORT, process.env.ADDRESS, () => {
-    console.log(`Server running at http://${process.env.ADDRESS}:${process.env.PORT}/`);
-});
+if (process.env.VERCEL === 1) {
+    app.listen(process.env.PORT, () => {
+        console.log(`Server running.`);
+    });
+}
+else {
+    app.listen(process.env.PORT, process.env.ADDRESS, () => {
+        console.log(`Server running at http://${process.env.ADDRESS}:${process.env.PORT}/`);
+    });
+}
+
