@@ -1,0 +1,14 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.426926448290669,
+      50.07359149992617
+    ]
+  },
+  "properties": {
+    "nickname": "Anonymous",
+    "comment": "No comment provided"
+  }
+}
