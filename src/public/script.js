@@ -7,7 +7,7 @@ let inputLng = document.getElementById("inputLng");
 
 let leafIcon = L.icon({
     iconUrl: 'icons/ginkgo-orange.svg',
-    shadowUrl: 'icons/ginkgo-shadow.png',
+    //shadowUrl: 'icons/ginkgo-shadow.png',
 
     iconSize:     [30, 30], // size of the icon
     shadowSize:   [30, 30], // size of the shadow
@@ -73,7 +73,7 @@ function addDataToMap(data, map) {
 }
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 22,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 

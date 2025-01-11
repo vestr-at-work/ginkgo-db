@@ -236,18 +236,20 @@ ul li {
 }
 
 /* Responsive Design for Small Screens */
-@media (max-width: 768px) {
+@media (max-width: 950px) {
     body {
         margin-top: 0.5em;
         width: 90%;
         margin-left: 5%;
     }
 
-    /* #map { 
-        margin-bottom: 15vh;
-    }  */
-
     .dialog-content {
         width: 80%; 
     }
+}
+
+@media (max-width: 630px) {
+    #map { 
+        margin-bottom: 5vh;
+    } 
 }
