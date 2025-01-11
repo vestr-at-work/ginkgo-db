@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.409918895376741,
+      50.08246225921552
+    ]
+  },
+  "properties": {
+    "id": 1736625114319,
+    "timestamp": "11. ledna 2025",
+    "size": "small",
+    "nickname": "GinkgoTester",
+    "comment": ""
+  }
+}
