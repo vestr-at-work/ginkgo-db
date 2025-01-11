@@ -6,6 +6,7 @@ import * as http from 'isomorphic-git/http/node/index.js';
 import express from 'express';
 import path from 'path';
 import asyncHandler from 'express-async-handler';
+import { time } from 'console';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -75,17 +76,26 @@ app.post('/api/request-new', asyncHandler(async (req, res) => {
     // Extract and sanitize data
     const lat = parseFloat(req.body.lat);
     const lng = parseFloat(req.body.lng);
+    const size = req.body.size;
     const nick = req.body.nick ? req.body.nick.trim() : 'Anonymous';
-    const comment = req.body.comment ? req.body.comment.trim() : 'No comment provided';
+    const comment = req.body.comment.trim();
 
     if (nick.length > 30 && comment.length > 161) {
         return res.status(400).send('Nick or Comment too long');
+    }
+
+    if (size !== "small" && size !== "medium" && size !== "large") {
+        return res.status(400).send('Invalid Size value');
     }
 
     // Basic validation
     if (isNaN(lat) || isNaN(lng)) {
         return res.status(400).send('Invalid latitude or longitude');
     }
+    
+    var options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const now = new Date();
+    const timestamp = Date.now();
 
     // Convert to GeoJSON Point Feature
     const geoJsonFeature = {
@@ -95,6 +105,9 @@ app.post('/api/request-new', asyncHandler(async (req, res) => {
             coordinates: [lng, lat], // GeoJSON uses [longitude, latitude] format
         },
         properties: {
+            id: timestamp,
+            timestamp: now.toLocaleDateString("en-IE"),
+            size: size,
             nickname: nick,
             comment: comment,
         },
@@ -102,8 +115,7 @@ app.post('/api/request-new', asyncHandler(async (req, res) => {
 
     // console.log('New GeoJSON Point Feature:', JSON.stringify(geoJsonFeature, null, 2));
 
-    const timestamp = Date.now();
-    const fileName = `${timestamp}.json`;
+    const fileName = `ginkgo_${timestamp}.json`;
     const filePath = path.join(REQUEST_DATA_DIR, fileName);
 
     // Save the GeoJSON feature to the file in repo

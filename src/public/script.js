@@ -26,11 +26,32 @@ window.onclick = function(event) {
     if (event.target == dialog) {
         dialog.style.display = "none";
     }
-} 
+}
+
+function capitalizeFirstLetter(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
+
+function getTreePopupAdd(lat, lng) {
+    return `<h3>Want to add new Ginkgo?</h3>
+            <input type="button" class="add-button center" role="button" onclick="addNewGinkgo(${lat}, ${lng})" value="Yes"/>`
+}
+
+function getTreePopup(properties) {
+    let result = `<h3>${capitalizeFirstLetter(properties.size)} Ginkgo Tree</h3>
+                <div id="treePopup">
+                <p>Found by <bold>${properties.nickname}</bold> on ${properties.timestamp}</p>`;
+
+    if (properties.comment !== "") {
+       result += `<p>${properties.comment}</p>`;
+    }
+
+    result += "</div>";
+    return result;
+}
 
 function onMapClick(e) {
-    let popupContent = `<h3>Want to add new Ginkgo?</h3>
-                        <input type="button" class="add-button center" role="button" onclick="addNewGinkgo(${e.latlng.lat}, ${e.latlng.lng})" value="Yes"/>`;
+    let popupContent = getTreePopupAdd(e.latlng.lat, e.latlng.lng);
     popup
         .setLatLng(e.latlng)
         .setContent(popupContent)
@@ -44,12 +65,7 @@ function addDataToMap(data, map) {
             return L.marker(latlng, { icon: leafIcon });
         },
         onEachFeature: (feature, layer) => {
-            let popupContent = `<h3>Ginkgo tree</h3>
-                                <p>Found by ${feature.properties.nickname}</p> 
-                                <p>${feature.properties.comment}</p>`;
-            if (feature.properties.image) {
-                popupContent += `<img src="${feature.properties.image}" alt="${feature.properties.title}" style="width:100px;">`;
-            }
+            let popupContent = getTreePopup(feature.properties);
             layer.bindPopup(popupContent);
         }
     }).addTo(map);
