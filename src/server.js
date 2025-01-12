@@ -154,6 +154,10 @@ app.get('/api/data', (req, res) => {
     res.json(treeGeoData);
 });
 
+app.get('/', (req, res) => {
+    res.sendFile('public/index.html');
+});
+
 if (process.env.VERCEL === 1) {
     app.listen(process.env.PORT, () => {
         console.log(`Server running.`);
