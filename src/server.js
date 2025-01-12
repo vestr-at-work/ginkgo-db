@@ -10,6 +10,7 @@ import asyncHandler from 'express-async-handler';
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
 const fs = new LightningFS('fs');
 const pfs = fs.promises;
@@ -152,8 +153,6 @@ app.post('/api/request-new', asyncHandler(async (req, res) => {
 app.get('/api/data', (req, res) => {
     res.json(treeGeoData);
 });
-
-app.use(express.static('public'));
 
 if (process.env.VERCEL === 1) {
     app.listen(process.env.PORT, () => {
