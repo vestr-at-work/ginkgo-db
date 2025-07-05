@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.451459402354585,
+      50.079370635943555
+    ]
+  },
+  "properties": {
+    "id": 1751754392452,
+    "timestamp": "5/7/2025",
+    "size": "medium",
+    "nickname": "Anonymous",
+    "comment": "first tree from vercel?"
+  }
+}
