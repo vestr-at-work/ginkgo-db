@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.420585644365389,
+      50.067881940647936
+    ]
+  },
+  "properties": {
+    "id": 1751888651215,
+    "timestamp": "7/7/2025",
+    "size": "medium",
+    "nickname": "vestr",
+    "comment": "On the side of a pavement in a tree line."
+  }
+}
