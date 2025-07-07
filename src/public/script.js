@@ -1,7 +1,9 @@
 let popup = L.popup();
 let geoJsonData = {};
 let map = L.map('map').setView([50.079420697915396, 14.451504480493412], 13);
-let dialog = document.getElementById("addGinkgoDialog");
+let addGinkgoDialog = document.getElementById("addGinkgoDialog");
+let ginkgoSuccesfullyAddedDialog = document.getElementById("ginkgoSuccesfullyAddedDialog");
+let ginkgoSuccesfullyAddedDialogButton = document.getElementById("ginkgoSuccesfullyAddedDialogButton");
 let inputLat = document.getElementById("inputLat");
 let inputLng = document.getElementById("inputLng");
 
@@ -17,15 +19,29 @@ let leafIcon = L.icon({
 });
 
 function addNewGinkgo(lat, lng) {
-    dialog.style.display = "block";
+    addGinkgoDialog.style.display = "block";
     inputLat.value = lat.toString();
     inputLng.value = lng.toString();
 }
 
 window.onclick = function(event) {
-    if (event.target == dialog) {
-        dialog.style.display = "none";
+    if (event.target == addGinkgoDialog || event.target == ginkgoSuccesfullyAddedDialog) {
+        addGinkgoDialog.style.display = "none";
+        ginkgoSuccesfullyAddedDialog.style.display = "none";
     }
+}
+
+function checkAndShowRequestSuccessDialog() {
+    if (new URL(window.location).searchParams.has('success')) {
+        ginkgoSuccesfullyAddedDialog.style.display = "block";
+    }
+    else {
+        ginkgoSuccesfullyAddedDialog.style.display = "none";
+    }
+}
+
+ginkgoSuccesfullyAddedDialogButton.onclick = function() {
+    ginkgoSuccesfullyAddedDialog.style.display = "none";
 }
 
 function capitalizeFirstLetter(val) {
@@ -34,11 +50,11 @@ function capitalizeFirstLetter(val) {
 
 function getTreePopupAdd(lat, lng) {
     return `<h3>Want to add new Ginkgo?</h3>
-            <input type="button" id="buttonAddTree" class="add-button center" role="button" onclick="addNewGinkgo(${lat}, ${lng})" value="Yes"/>`
+            <input type="button" id="buttonAddTree" class="dialog-button center" role="button" onclick="addNewGinkgo(${lat}, ${lng})" value="Yes"/>`
 }
 
 function getTreePopup(properties) {
-    let result = `<h3>${capitalizeFirstLetter(properties.size)} Ginkgo Tree</h3>
+    let result = `<h3 class="no-top-margin">${capitalizeFirstLetter(properties.size)} Ginkgo Tree</h3>
                 <div id="tree-pupup-content-container">`;
 
     if (properties.comment !== "") {
@@ -94,3 +110,6 @@ fetch('api/data')
     });
 
 map.on('click', onMapClick);
+
+// Show dialog on /?success
+checkAndShowRequestSuccessDialog();

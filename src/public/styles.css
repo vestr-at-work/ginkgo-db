@@ -91,19 +91,6 @@ ul li {
     margin-bottom: 10vh;
 }
 
-#addGinkgoDialog {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 9999; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
 #buttonAddTree {
     margin-top: 0.4em;
     margin-bottom: 0.3em;
@@ -119,6 +106,39 @@ ul li {
     padding-top: 0.5em;
 }
 
+.textblock-container {
+    background-color: #DEAA79;
+    padding: 1.2em;
+    border-radius: 1em;
+    margin-bottom: 2em;
+}
+
+.textblock-container p, ul li {
+    color:#FFFFFF;
+    margin-top: 0;
+}
+
+.textblock-container :last-child {
+    margin-bottom: 0;
+}
+
+.flex {
+    display: flex;
+}
+
+.dialog {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 9999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
 .leaflet-popup-content {
     margin-right: 20px;
     display: flex;
@@ -131,12 +151,24 @@ ul li {
     margin-bottom: 0.5em;
 }
 
+.leaflet-popup-content .no-top-margin {
+    margin-top: 0;
+}
+
 .dialog-content {
     background-color: #FAFAFA;
     margin: 10em auto; /* 10em from the top and centered */
     padding: 1.5em;
-    width: 70%;
+    width: 60%;
     border-radius: 1em;
+}
+
+.dialog-content-small {
+    width: 40%;
+}
+
+.dialog-content-big {
+    width: 60%;
 }
 
 .form-container {
@@ -151,11 +183,10 @@ ul li {
     font-weight: bold;
 }
 
-.form-container h3 {
+.dialog-title {
     margin-top: 0;
     margin-left: auto;
     margin-right: auto;
-    color: #DEAA79; 
 }
 
 .form-container select {
@@ -172,7 +203,7 @@ ul li {
     font-size: medium;
 }
 
-.add-button {
+.dialog-button {
     appearance: none;
     background-color: #659287;
     border: 1px solid rgba(27, 31, 35, .15);
@@ -195,28 +226,28 @@ ul li {
     white-space: nowrap;
 }
 
-.add-button:focus:not(:focus-visible):not(.focus-visible) {
+.dialog-button:focus:not(:focus-visible):not(.focus-visible) {
     box-shadow: none;
     outline: none;
 }
 
-.add-button:hover {
+.dialog-button:hover {
     background-color: #7aa399;
 }
 
-.add-button:focus {
+.dialog-button:focus {
     box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
     outline: none;
 }
 
-.add-button:disabled {
+.dialog-button:disabled {
     background-color: #94d3a2;
     border-color: rgba(27, 31, 35, .1);
     color: rgba(255, 255, 255, .8);
     cursor: default;
 }
 
-.add-button:active {
+.dialog-button:active {
     background-color: #659287;
     box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
 }
@@ -225,11 +256,11 @@ ul li {
     margin: 0px auto;
 }
 
-.form-container .add-button {
+.form-container .dialog-button {
     margin-top: 0.3em
 }
 
-.leaflet-popup-content .add-button {
+.leaflet-popup-content .dialog-button {
     margin-bottom: 0.2em;
     font-size: medium;
     padding: 0.3em 0.7em;
@@ -243,8 +274,12 @@ ul li {
         margin-left: 5%;
     }
 
-    .dialog-content {
+    .dialog-content-big {
         width: 80%; 
+    }
+
+    .dialog-content-small {
+        width: 60%; 
     }
 }
 

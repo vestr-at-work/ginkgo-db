@@ -157,7 +157,7 @@ app.post('/api/request-new', asyncHandler(async (req, res) => {
     // console.log(pushResult);
     
     // Redirect to the main site after success
-    res.redirect('/');
+    res.redirect('/?success');
 }));
 
 // Handle GET request to /api/data
