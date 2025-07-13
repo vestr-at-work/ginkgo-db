@@ -18,6 +18,13 @@ let leafIcon = L.icon({
     popupAnchor:  [0, -20] // point from which the popup should open relative to the iconAnchor
 });
 
+const userIcon = L.divIcon({
+    className: 'user-location-icon',
+    html: '<div class="gps-dot"></div>',
+    iconSize: [20, 20],
+    iconAnchor: [10, 10]
+});
+
 function addNewGinkgo(lat, lng) {
     addGinkgoDialog.style.display = "block";
     inputLat.value = lat.toString();
@@ -48,8 +55,15 @@ function capitalizeFirstLetter(val) {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
 
-function getTreePopupAdd(lat, lng) {
-    return `<h3>Want to add new Ginkgo?</h3>
+function getTreePopupAdd(lat, lng, onUserPos) {
+    let title = "";
+    if (onUserPos) {
+        title = "Add new Ginkgo on your position?"
+    } else {
+        title = "Add new Ginkgo?"
+    }
+
+    return `<h3>${title}</h3>
             <input type="button" id="buttonAddTree" class="dialog-button center" role="button" onclick="addNewGinkgo(${lat}, ${lng})" value="Yes"/>`
 }
 
@@ -68,7 +82,7 @@ function getTreePopup(properties) {
 }
 
 function onMapClick(e) {
-    let popupContent = getTreePopupAdd(e.latlng.lat, e.latlng.lng);
+    let popupContent = getTreePopupAdd(e.latlng.lat, e.latlng.lng, false);
     popup
         .setLatLng(e.latlng)
         .setContent(popupContent)
@@ -110,6 +124,110 @@ fetch('api/data')
     });
 
 map.on('click', onMapClick);
+
+let watchId = null;
+let userMarker = null;
+let isTracking = false;
+let hasAutoCenteredOnce = false;
+
+// Start watching user's location
+function startTracking() {
+    if (isTracking) return;
+
+    watchId = navigator.geolocation.watchPosition(
+        function (e) {
+            const latlng = [e.coords.latitude, e.coords.longitude];
+
+            // Add or update marker
+            if (!userMarker) {
+                let popupContent = getTreePopupAdd(latlng[0], latlng[1], true);
+                userMarker = L.marker(latlng, { icon: userIcon }).addTo(map)
+                    .bindPopup(popupContent);
+            } else {
+                userMarker.setLatLng(latlng);
+            }
+
+            // Center only once
+            if (!hasAutoCenteredOnce) {
+                map.setView(latlng);
+                hasAutoCenteredOnce = true;
+            }
+        },
+        function (err) {
+            alert("Error getting location: " + err.message);
+        },
+        {
+            enableHighAccuracy: true
+        }
+    );
+
+    isTracking = true;
+    updateGpsButtonState(true);
+}
+
+// Stop watching user's location
+function stopTracking() {
+    if (!isTracking) return;
+
+    if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+    }
+
+    isTracking = false;
+    hasAutoCenteredOnce = false;
+    updateGpsButtonState(false);
+}
+
+// Toggle tracking
+function toggleTracking() {
+    if (isTracking) {
+        stopTracking();
+    } else {
+        startTracking();
+    }
+}
+
+// Add Leaflet GPS toggle button
+const GpsToggleControl = L.Control.extend({
+    options: {
+        position: 'topright'
+    },
+
+    onAdd: function (map) {
+        const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom map-button active');
+        container.id = 'gpsToggleButton';
+        container.innerHTML = '📡';
+        container.title = 'Toggle GPS Tracking';
+
+        L.DomEvent.disableClickPropagation(container);
+        L.DomEvent.disableScrollPropagation(container);
+
+        container.onclick = function () {
+            toggleTracking();
+        };
+
+        return container;
+    }
+});
+
+// Update button appearance
+function updateGpsButtonState(active) {
+    const button = document.getElementById('gpsToggleButton');
+    if (!button) return;
+
+    if (active) {
+        button.classList.add('active');
+        button.innerHTML = '📡'; // active icon
+    } else {
+        button.classList.remove('active');
+        button.innerHTML = '📍'; // inactive icon
+    }
+}
+
+// Add the toggle control to map
+map.addControl(new GpsToggleControl());
+startTracking();
 
 // Show dialog on /?success
 checkAndShowRequestSuccessDialog();

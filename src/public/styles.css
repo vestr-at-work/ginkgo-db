@@ -29,6 +29,29 @@ body {
     margin-bottom: 4em;
 }
 
+.gps-dot {
+    width: 16px;
+    height: 16px;
+    background-color: #5100ff;
+    border: 2px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(0,0,0,0.4);
+}
+
+.map-button {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    font-size: 20px;
+    background-color: white;
+}
+
+.map-button.active {
+    background-color: #a0e0a0;
+}
+
 .page-container {
     width: 70%;
     margin-left: 15%;
