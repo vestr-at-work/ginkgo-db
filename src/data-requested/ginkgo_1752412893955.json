@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.464671760797502,
+      50.04428944015521
+    ]
+  },
+  "properties": {
+    "id": 1752412893955,
+    "timestamp": "13/7/2025",
+    "size": "medium",
+    "nickname": "vestr",
+    "comment": "Tree straight as an arrow in the yard behind a fence right next to the sidewalk"
+  }
+}
