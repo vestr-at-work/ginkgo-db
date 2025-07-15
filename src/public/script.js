@@ -5,7 +5,9 @@ let addGinkgoDialog = document.getElementById("addGinkgoDialog");
 let ginkgoSuccesfullyAddedDialog = document.getElementById("ginkgoSuccesfullyAddedDialog");
 let ginkgoSuccesfullyAddedDialogButton = document.getElementById("ginkgoSuccesfullyAddedDialogButton");
 let inputLat = document.getElementById("inputLat");
-let inputLng = document.getElementById("inputLng");
+let treeCounter = document.getElementById("tree-counter");
+let userCounter = document.getElementById("user-counter");
+let topUser = document.getElementById("top-user");
 
 let leafIcon = L.icon({
     iconUrl: 'icons/ginkgo-orange.svg',
@@ -81,6 +83,40 @@ function getTreePopup(properties) {
     return result;
 }
 
+function updateCounters(geoData) {
+    const items = geoData.features;
+    let treeCountInt = items.length;
+    console.log(treeCountInt);
+
+    let users = new Map();
+    let userCountInt = 0;
+    let maxCount = 0;
+    let maxCountUser;
+    for (let i = 0; i < items.length; i++) {
+        let nickname = items[i].properties.nickname;
+        console.log(nickname);
+        if (!users.has(nickname)) {
+            users.set(nickname, 1);
+            userCountInt++;
+            if (1 > maxCount) {
+                maxCount = 1;
+                maxCountUser = nickname;
+            }
+        } else {
+            let newCount = users.get(nickname) + 1;
+            if (newCount > maxCount) {
+                maxCount = newCount;
+                maxCountUser = nickname;
+            }
+            users.set(nickname, newCount);
+        }
+    }
+    treeCounter.innerText = treeCountInt;
+    userCounter.innerText = userCountInt;
+    topUser.innerText = maxCountUser;
+    console.log(users);
+}
+
 function onMapClick(e) {
     let popupContent = getTreePopupAdd(e.latlng.lat, e.latlng.lng, false);
     popup
@@ -118,6 +154,7 @@ fetch('api/data')
     .then(data => {
         geoJsonData = data;
         addDataToMap(geoJsonData, map);
+        updateCounters(geoJsonData);
     })
     .catch(error => {
         console.error('Error loading GeoJSON:', error);
