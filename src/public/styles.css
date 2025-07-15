@@ -407,6 +407,10 @@ ul li {
         grid-template-columns: auto auto;
         grid-template-rows: auto auto; 
     }
+
+    .info-panel-content {
+        font-size: x-large;
+    }
 }
 
 @media (max-width: 440px) {
