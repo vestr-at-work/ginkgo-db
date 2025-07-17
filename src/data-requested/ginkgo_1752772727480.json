@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      15.989991859614396,
+      45.80749092760699
+    ]
+  },
+  "properties": {
+    "id": 1752772727480,
+    "timestamp": "17/7/2025",
+    "size": "large",
+    "nickname": "HorseGirl123",
+    "comment": "Huge boy"
+  }
+}
