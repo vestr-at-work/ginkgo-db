@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.441269487142565,
+      50.071776818118956
+    ]
+  },
+  "properties": {
+    "id": 1752858787882,
+    "timestamp": "18/7/2025",
+    "size": "medium",
+    "nickname": "vestr",
+    "comment": "Tree in an alley"
+  }
+}
