@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      16.930402368307117,
+      49.936885895341454
+    ]
+  },
+  "properties": {
+    "id": 1753630591300,
+    "timestamp": "27/7/2025",
+    "size": "small",
+    "nickname": "vestr",
+    "comment": "in a private garden"
+  }
+}
