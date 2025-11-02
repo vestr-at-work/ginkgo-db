@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      13.903432440910079,
+      49.258451837568465
+    ]
+  },
+  "properties": {
+    "id": 1762069873460,
+    "timestamp": "2/11/2025",
+    "size": "small",
+    "nickname": "csha",
+    "comment": ""
+  }
+}
