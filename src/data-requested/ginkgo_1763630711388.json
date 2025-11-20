@@ -1,0 +1,17 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      14.455402428833686,
+      50.12486297069102
+    ]
+  },
+  "properties": {
+    "id": 1763630711388,
+    "timestamp": "20/11/2025",
+    "size": "large",
+    "nickname": "csha",
+    "comment": "Stromořadí"
+  }
+}
